@@ -95,7 +95,7 @@
     z-index: 0;
   } 
 
-  .hero-content { position: relative; z-index: 1; max-width: 900px; }
+  .hero-content { position: relative; z-index: 1; }
 
   .hero-tag {
     display: inline-flex; align-items: center; gap: 8px;
@@ -565,6 +565,172 @@
     opacity: 0.6;
   }
 
+  /* HERO LAYOUT WITH PHOTO */
+  .hero-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 60px;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+  }
+  .hero-content { max-width: 620px; flex-shrink: 0; }
+
+  .hero-photo-wrap {
+    flex-shrink: 0;
+    position: relative;
+  }
+  .hero-photo {
+    width: 400px;
+    height: 600px;
+    object-fit: cover;
+    border-radius: 32px;
+    display: block;
+    border: 1px solid var(--border);
+    filter: grayscale(15%);
+    transition: filter 0.4s;
+  }
+  .hero-photo-wrap:hover .hero-photo { filter: grayscale(0%); }
+  .hero-photo-wrap::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 34px;
+    background: linear-gradient(135deg, rgba(99,179,237,0.3), rgba(159,122,234,0.2), transparent 60%);
+    z-index: -1;
+  }
+  .hero-photo-placeholder {
+    width: 400px;
+    height: 600px;
+    border-radius: 32px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    color: var(--muted);
+    font-size: 13px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.06em;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-photo-placeholder::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 34px;
+    background: linear-gradient(135deg, rgba(99,179,237,0.3), rgba(159,122,234,0.2), transparent 60%);
+    z-index: -1;
+  }
+  .hero-photo-placeholder svg {
+    width: 64px; height: 64px;
+    color: var(--faint);
+  }
+  .photo-hint {
+    font-size: 11px;
+    color: var(--faint);
+    text-align: center;
+    padding: 0 32px;
+    line-height: 1.6;
+  }
+
+  /* PROJECT IMAGE */
+  .project-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+    cursor: pointer;
+    transition: transform 0.3s, filter 0.3s;
+    filter: brightness(0.9);
+  }
+  .project-card:hover .project-image {
+    transform: scale(1.02);
+    filter: brightness(1);
+  }
+  .project-img-wrap {
+    overflow: hidden;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .project-img-wrap::after {
+    content: '🔍 Click to preview';
+    position: absolute;
+    bottom: 10px; right: 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: rgba(255,255,255,0.7);
+    background: rgba(0,0,0,0.55);
+    padding: 4px 10px;
+    border-radius: 100px;
+    backdrop-filter: blur(6px);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .project-card:hover .project-img-wrap::after { opacity: 1; }
+
+  /* LIGHTBOX */
+  .lightbox {
+    display: none;
+    position: fixed; inset: 0; z-index: 9999;
+    background: rgba(0,0,0,0.88);
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    animation: lbFadeIn 0.25s ease;
+  }
+  .lightbox.open { display: flex; }
+  @keyframes lbFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .lightbox-img {
+    max-width: 90vw;
+    max-height: 85vh;
+    object-fit: contain;
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 40px 120px rgba(0,0,0,0.7);
+    animation: lbSlideUp 0.3s ease;
+  }
+  @keyframes lbSlideUp {
+    from { transform: scale(0.92) translateY(20px); opacity: 0; }
+    to { transform: scale(1) translateY(0); opacity: 1; }
+  }
+  .lightbox-close {
+    position: absolute;
+    top: 24px; right: 28px;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #fff;
+    font-size: 20px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s;
+    line-height: 1;
+  }
+  .lightbox-close:hover { background: rgba(255,255,255,0.2); }
+  .lightbox-caption {
+    position: absolute;
+    bottom: 28px;
+    left: 50%; transform: translateX(-50%);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 1100px) {
+    .hero-photo, .hero-photo-placeholder { width: 300px; height: 450px; }
+  }
   @media (max-width: 768px) {
     nav { padding: 16px 24px; }
     .nav-links { display: none; }
@@ -574,6 +740,8 @@
     .exp-item { grid-template-columns: 1fr; gap: 20px; }
     .about-grid { grid-template-columns: 1fr; gap: 40px; }
     footer { flex-direction: column; gap: 12px; text-align: center; }
+    .hero-inner { flex-direction: column-reverse; gap: 40px; }
+    .hero-photo, .hero-photo-placeholder { width: 100%; max-width: 360px; height: 400px; }
   }
 </style>
 </head>
@@ -596,26 +764,44 @@
   <div class="hero-grid"></div>
   <div class="hero-glow"></div>
   <div class="hero-glow2"></div> 
-  <div class="hero-content">
-    <div class="hero-tag">Available for opportunities</div>
-    <h1>Bilal <em>BOUJEDAA</em></h1>
-    <p class="hero-sub">iOS Developer crafting high-quality mobile experiences with Swift, SwiftUI & UIKit — from architecture to App Store.</p>
-    <div class="hero-cta">
-      <a href="#projects" class="btn btn-primary">View Projects</a>
-      <a href="#contact" class="btn btn-outline">Get in Touch</a>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-tag">Available for opportunities</div>
+      <h1>Bilal <em>BOUJEDAA</em></h1>
+      <p class="hero-sub">iOS Developer crafting high-quality mobile experiences with Swift, UIKit & SwiftUI — from architecture to App Store.</p>
+      <div class="hero-cta">
+        <a href="#projects" class="btn btn-primary">View Projects</a>
+        <a href="#contact" class="btn btn-outline">Get in Touch</a>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="stat-num">3+</div>
+          <div class="stat-label">Years Experience</div>
+        </div>
+        <div>
+          <div class="stat-num">7+</div>
+          <div class="stat-label">Apps Shipped</div>
+        </div>
+        <div>
+          <div class="stat-num">5</div>
+          <div class="stat-label">Production Apps at SwifTech</div>
+        </div>
+      </div>
     </div>
-    <div class="hero-stats">
-      <div>
-        <div class="stat-num">3+</div>
-        <div class="stat-label">Years Experience</div>
-      </div>
-      <div>
-        <div class="stat-num">7+</div>
-        <div class="stat-label">Apps Shipped</div>
-      </div>
-      <div>
-        <div class="stat-num">5</div>
-        <div class="stat-label">Production Apps at SwifTech</div>
+ 
+    <div class="hero-photo-wrap">
+      <img
+        src="profile_picture.jpg"
+        alt="Bilal Boujedaa"
+        class="hero-photo"
+        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+      />
+      <div class="hero-photo-placeholder" style="display:none;">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
+        </svg>
+        <span>profile.jpg</span>
+        <span class="photo-hint">Replace src="profile.jpg" with your photo path</span>
       </div>
     </div>
   </div>
@@ -684,6 +870,9 @@
 
     <!-- LastDream -->
     <div class="project-card reveal">
+      <div class="project-img-wrap">
+        <img class="project-image" src="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=800&q=80" alt="LastDream preview" onclick="openLightbox(this.src, 'LastDream — Football Social Media App')" />
+      </div>
       <div class="project-header">
         <span class="project-category">Social Media</span>
         <div class="project-emoji">⚽</div>
@@ -707,6 +896,9 @@
 
     <!-- Vlox -->
     <div class="project-card reveal">
+      <div class="project-img-wrap">
+        <img class="project-image" src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=800&q=80" alt="Vlox preview" onclick="openLightbox(this.src, 'Vlox Driver & Client — Ride-Hailing Suite')" />
+      </div>
       <div class="project-header">
         <span class="project-category">Ride-Hailing</span>
         <div class="project-emoji">🚗</div>
@@ -730,6 +922,9 @@
 
     <!-- SwiftPunch -->
     <div class="project-card reveal">
+      <div class="project-img-wrap">
+        <img class="project-image" src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80" alt="SwiftPunch preview" onclick="openLightbox(this.src, 'SwiftPunch — HR Attendance Management')" />
+      </div>
       <div class="project-header">
         <span class="project-category">HR Enterprise</span>
         <div class="project-emoji">🏢</div>
@@ -753,6 +948,9 @@
 
     <!-- Beem -->
     <div class="project-card reveal">
+      <div class="project-img-wrap">
+        <img class="project-image" src="https://images.unsplash.com/photo-1524661135-423995f22d0b?w=800&q=80" alt="Beem Smart Taxi preview" onclick="openLightbox(this.src, 'Beem Smart Taxi — Client App')" />
+      </div>
       <div class="project-header">
         <span class="project-category">Transport</span>
         <div class="project-emoji">🗺️</div>
@@ -776,6 +974,9 @@
 
     <!-- Tableau -->
     <div class="project-card reveal">
+      <div class="project-img-wrap">
+        <img class="project-image" src="tableau.jpg" alt="Tableau preview" onclick="openLightbox(this.src, 'Tableau — Event Management App')" />
+      </div>
       <div class="project-header">
         <span class="project-category">Events & Payments</span>
         <div class="project-emoji">🎟️</div>
@@ -798,6 +999,9 @@
 
     <!-- Rashaf -->
     <div class="project-card reveal">
+      <div class="project-img-wrap">
+        <img class="project-image" src="rashaf.jpg" alt="Rashaf preview" onclick="openLightbox(this.src, 'Rashaf — Men\'s Wellness Center App')" />
+      </div>
       <div class="project-header">
         <span class="project-category">Wellness & Booking</span>
         <div class="project-emoji">💆</div>
@@ -943,6 +1147,13 @@
   </div>
 </section>
 
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <button class="lightbox-close" onclick="closeLightbox()" aria-label="Close">✕</button>
+  <img class="lightbox-img" id="lightbox-img" src="" alt="" />
+  <div class="lightbox-caption" id="lightbox-caption"></div>
+</div>
+
 <!-- FOOTER -->
 <footer>
   <p>Bilal Boujedaa — iOS Developer</p>
@@ -950,6 +1161,30 @@
 </footer>
 
 <script>
+function openLightbox(src, caption) {
+  const lb = document.getElementById('lightbox');
+  const img = document.getElementById('lightbox-img');
+  const cap = document.getElementById('lightbox-caption');
+  img.src = src;
+  img.alt = caption;
+  cap.textContent = caption;
+  lb.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox(e) {
+  if (e && e.target !== document.getElementById('lightbox') && !e.target.classList.contains('lightbox-close')) return;
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+});
+
 const observer = new IntersectionObserver(entries => {
   entries.forEach((entry, i) => {
     if (entry.isIntersecting) {
